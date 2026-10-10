@@ -10,7 +10,7 @@ dashboard, English/Khmer language switch and light/dark mode.
 - **Dashboard**: room statistics, occupancy rate, room map by floor, estimated revenue
 - **Authentication**: register, login, logout, update profile, change password, delete account
 - **Profile photo** upload
-- **Languages**: English and Khmer (Kantumruy Pro font)
+- **Languages**: English and Khmer (Kantumruy Pro font); room types are translated to Khmer automatically when saved
 - **Light / dark mode** on every page
 
 ## Requirements
@@ -19,6 +19,7 @@ dashboard, English/Khmer language switch and light/dark mode.
 - Composer
 - Node.js and npm
 - MySQL (Laragon is recommended on Windows)
+- Internet connection (needed to auto-translate room types to Khmer)
 
 ## Installation
 
@@ -99,6 +100,7 @@ Open http://localhost:8000 and register a new account.
 | Page has no styling | Run `npm run build` |
 | Profile photo not showing | Run `php artisan storage:link` |
 | Old settings still used | Run `php artisan optimize:clear` |
+| Room type has no Khmer translation | Check your internet connection, then edit and save the room type again |
 
 ## Tech Stack
 
