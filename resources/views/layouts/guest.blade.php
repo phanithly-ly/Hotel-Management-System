@@ -18,8 +18,9 @@
     <div class="min-h-screen flex relative overflow-hidden bg-gradient-to-br from-stone-50 via-amber-50 to-orange-50">
 
         {{-- Decorative blobs --}}
-        <div class="hidden lg:block absolute -top-20 -right-20 w-72 h-72 rounded-full bg-amber-200/30"></div>
-        <div class="hidden lg:block absolute -bottom-24 right-40 w-56 h-56 rounded-full bg-orange-200/30"></div>
+        <div class="hidden lg:block absolute -top-20 -right-20 w-72 h-72 rounded-full bg-amber-300/50 blur-2xl"></div>
+        <div class="hidden lg:block absolute -bottom-24 right-40 w-64 h-64 rounded-full bg-orange-300/50 blur-2xl"></div>
+        <div class="absolute top-1/3 right-1/4 w-60 h-60 rounded-full bg-yellow-300/40 blur-3xl"></div>
 
         {{-- LEFT: Curved Hotel Image --}}
         <div class="hidden lg:block lg:w-1/2 relative">
@@ -79,7 +80,7 @@
                     <p class="italic text-gray-400 text-sm mt-1">Your hotel, our priority.</p>
                 </div>
 
-                <div class="bg-white shadow-xl rounded-2xl px-6 py-8">
+                <div class="bg-white/75 backdrop-blur-xl border border-white/60 shadow-xl rounded-2xl px-6 py-8">
                     {{ $slot }}
                 </div>
 

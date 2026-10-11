@@ -5,7 +5,7 @@
 
     <div class="py-10">
         <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8">
+            <div class="bg-white/75 dark:bg-gray-800/70 backdrop-blur-xl border border-white/60 dark:border-gray-700/50 shadow-xl rounded-2xl p-8">
                 <h1 class="text-center text-2xl font-bold text-amber-600 dark:text-amber-500 uppercase tracking-wide mb-6">{{ __('Edit Room') }}</h1>
                 <form method="POST" action="{{ route('rooms.update', $room) }}">
                     @method('PUT')

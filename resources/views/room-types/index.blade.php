@@ -27,7 +27,7 @@
                 <div class="mb-4 p-3 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 rounded-md">{{ session('success') }}</div>
             @endif
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
+            <div class="bg-white/50 dark:bg-gray-900/40 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-xl shadow-black/5 rounded-3xl overflow-hidden">
                 <form method="GET" class="flex flex-wrap items-center justify-between gap-3 p-4 border-b border-gray-100 dark:border-gray-700">
                     <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                         <select name="per_page" onchange="this.form.submit()"
@@ -52,7 +52,7 @@
                 </form>
 
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-                    <thead class="bg-gray-50 dark:bg-gray-700 text-left text-gray-600 dark:text-gray-300 uppercase text-xs tracking-wide">
+                    <thead class="bg-white/40 dark:bg-white/5 text-left text-gray-700 dark:text-gray-300 uppercase text-xs tracking-wide">
                         <tr>
                             @php $cols = ['id' => __('ID'), 'type_name' => __('Type Name'), 'price_per_night' => __('Price / Night'), 'capacity' => __('Capacity')]; @endphp
                             @foreach ($cols as $key => $label)
@@ -75,7 +75,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @forelse ($roomTypes as $i => $type)
-                            <tr class="{{ $i % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/60 dark:bg-gray-700/40' }} hover:bg-amber-50/60 dark:hover:bg-gray-700">
+                            <tr class="{{ $i % 2 === 0 ? 'bg-transparent' : 'bg-white/30 dark:bg-white/5' }} hover:bg-amber-50/60 dark:hover:bg-gray-700">
                                 <td class="px-4 py-3 font-semibold text-amber-600 dark:text-amber-400">{{ $type->id }}</td>
                                 <td class="px-4 py-3 font-medium text-stone-800 dark:text-gray-100">{{ $type->display_name }}</td>
                                 <td class="px-4 py-3 dark:text-gray-200">${{ number_format($type->price_per_night, 2) }}</td>

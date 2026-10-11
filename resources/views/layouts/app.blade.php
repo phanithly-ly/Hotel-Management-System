@@ -19,12 +19,19 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
-    <div class="min-h-screen">
+<body class="font-sans antialiased bg-gradient-to-br from-amber-100 via-orange-50 to-stone-200 dark:from-gray-900 dark:via-stone-900 dark:to-gray-900 bg-fixed text-gray-900 dark:text-gray-100 transition-colors duration-200">
+
+    {{-- Blurred photo background + colour overlay (glassmorphism) --}}
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <img src="{{ asset('images/hotel.png') }}" alt="" class="absolute inset-0 h-full w-full object-cover scale-110 blur-[2px]">
+        <div class="absolute inset-0 bg-gradient-to-br from-amber-100/55 via-orange-50/45 to-stone-200/55 dark:from-gray-950/65 dark:via-stone-950/60 dark:to-gray-950/65"></div>
+    </div>
+
+    <div class="relative z-10 min-h-screen">
         @include('layouts.navigation')
 
         @if (isset($header))
-            <header class="bg-white dark:bg-gray-800 shadow">
+            <header>
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>

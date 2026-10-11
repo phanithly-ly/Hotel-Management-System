@@ -21,7 +21,8 @@
     ];
 
     $pct = fn ($n) => $total ? round($n / $total * 100, 1) : 0;
-    $card = 'bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700';
+    $card = 'bg-white/50 dark:bg-gray-900/40 backdrop-blur-2xl rounded-3xl border border-white/60 dark:border-white/10 shadow-xl shadow-black/5';
+    $lift = 'transition duration-200 hover:-translate-y-0.5 hover:shadow-2xl';
 @endphp
 
 <x-app-layout>
@@ -29,16 +30,16 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __('Dashboard') }}</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ now()->locale(app()->getLocale())->translatedFormat('l, d F Y') }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-0.5">{{ now()->locale(app()->getLocale())->translatedFormat('l, d F Y') }}</p>
             </div>
             <div class="flex flex-wrap gap-2">
                 <a href="{{ route('rooms.create') }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white text-sm font-semibold rounded-md hover:bg-amber-700 shadow">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white text-sm font-semibold rounded-full hover:bg-amber-700 shadow-lg shadow-amber-600/30">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                     {{ __('Add Room') }}
                 </a>
                 <a href="{{ route('room-types.create') }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 border border-gray-300 dark:border-gray-600 text-sm font-semibold rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 shadow-sm">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-white/10 backdrop-blur text-gray-700 dark:text-gray-100 border border-white/60 dark:border-white/20 text-sm font-semibold rounded-full hover:bg-white/80 dark:hover:bg-white/20 shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                     {{ __('Add Room Type') }}
                 </a>
@@ -46,24 +47,28 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="pb-10 pt-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             {{-- Welcome --}}
-            <div class="rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 p-6 text-white shadow-lg">
-                <h3 class="text-xl font-bold">{{ __('Welcome back') }}, {{ auth()->user()->name }}</h3>
-                <p class="mt-1 text-sm text-amber-50">{{ __("Here's what's happening at your hotel today.") }}</p>
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/90 to-orange-600/90 backdrop-blur-md border border-white/30 p-6 text-white shadow-xl shadow-orange-500/20">
+                <div class="absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10"></div>
+                <div class="absolute right-28 -bottom-14 h-36 w-36 rounded-full bg-white/10"></div>
+                <div class="relative">
+                    <h3 class="text-xl font-bold">{{ __('Welcome back') }}, {{ auth()->user()->name }}</h3>
+                    <p class="mt-1 text-sm text-amber-50">{{ __("Here's what's happening at your hotel today.") }}</p>
+                </div>
             </div>
 
             {{-- Stat cards --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ($statCards as $s)
-                    <div class="{{ $card }} p-5 flex items-center gap-4">
-                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl {{ $s['badge'] }}">
+                    <div class="{{ $card }} {{ $lift }} p-5 flex items-center gap-4">
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl {{ $s['badge'] }}">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $s['icon'] }}"/></svg>
                         </span>
                         <div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $s['label'] }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">{{ $s['label'] }}</p>
                             <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $s['value'] }}</p>
                         </div>
                     </div>
@@ -73,30 +78,32 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {{-- Occupancy --}}
-                <div class="{{ $card }} p-6">
+                <div class="{{ $card }} p-6 flex flex-col">
                     <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ __('Occupancy Rate') }}</h3>
 
-                    <div class="relative w-40 h-40 mx-auto">
-                        <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
-                            <circle cx="60" cy="60" r="52" fill="none" stroke-width="12" class="stroke-gray-200 dark:stroke-gray-700"/>
-                            <circle cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round"
-                                    class="stroke-amber-500" stroke-dasharray="{{ $occupancyRate * 3.2673 }} 326.73"/>
-                        </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $occupancyRate }}%</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Occupied') }}</span>
+                    <div class="flex-1 flex flex-col justify-center">
+                        <div class="relative w-40 h-40 mx-auto">
+                            <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+                                <circle cx="60" cy="60" r="52" fill="none" stroke-width="12" class="stroke-gray-200 dark:stroke-gray-700"/>
+                                <circle cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round"
+                                        class="stroke-amber-500" stroke-dasharray="{{ $occupancyRate * 3.2673 }} 326.73"/>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $occupancyRate }}%</span>
+                                <span class="text-xs text-gray-600 dark:text-gray-300">{{ __('Occupied') }}</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mt-6 flex h-2.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-                        <div class="bg-green-500" style="width: {{ $pct($available) }}%"></div>
-                        <div class="bg-red-500" style="width: {{ $pct($occupied) }}%"></div>
-                        <div class="bg-yellow-500" style="width: {{ $pct($maintenance) }}%"></div>
-                    </div>
-                    <div class="mt-3 flex flex-wrap justify-between gap-2 text-xs text-gray-600 dark:text-gray-300">
-                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-green-500"></span>{{ __('Available') }} ({{ $available }})</span>
-                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-red-500"></span>{{ __('Occupied') }} ({{ $occupied }})</span>
-                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-yellow-500"></span>{{ __('Maintenance') }} ({{ $maintenance }})</span>
+                        <div class="mt-6 flex h-2.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+                            <div class="bg-green-500" style="width: {{ $pct($available) }}%"></div>
+                            <div class="bg-red-500" style="width: {{ $pct($occupied) }}%"></div>
+                            <div class="bg-yellow-500" style="width: {{ $pct($maintenance) }}%"></div>
+                        </div>
+                        <div class="mt-3 flex flex-wrap justify-between gap-2 text-xs text-gray-700 dark:text-gray-300">
+                            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-green-500"></span>{{ __('Available') }} ({{ $available }})</span>
+                            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-red-500"></span>{{ __('Occupied') }} ({{ $occupied }})</span>
+                            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-yellow-500"></span>{{ __('Maintenance') }} ({{ $maintenance }})</span>
+                        </div>
                     </div>
                 </div>
 
@@ -104,26 +111,26 @@
                 <div class="{{ $card }} p-6 lg:col-span-2">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Room Map') }}</h3>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Click a room to edit it.') }}</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-300">{{ __('Click a room to edit it.') }}</span>
                     </div>
 
                     @forelse ($floors as $floor => $floorRooms)
-                        <div class="flex items-start gap-4 py-3 {{ ! $loop->last ? 'border-b border-gray-100 dark:border-gray-700' : '' }}">
-                            <div class="w-20 shrink-0 pt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <div class="flex items-start gap-4 py-3 {{ ! $loop->last ? 'border-b border-white/50 dark:border-white/10' : '' }}">
+                            <div class="w-20 shrink-0 pt-2 text-sm font-medium text-gray-600 dark:text-gray-300">
                                 {{ __('Floor') }} {{ $floor ?: '-' }}
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($floorRooms as $room)
                                     <a href="{{ route('rooms.edit', $room) }}"
                                        title="{{ $room->roomType->type_name ?? '' }} • ${{ number_format($room->roomType->price_per_night ?? 0, 2) }}"
-                                       class="min-w-[3.5rem] text-center px-3 py-2 rounded-lg border text-sm font-semibold transition {{ $tileStyle[$room->status] ?? '' }}">
+                                       class="min-w-[3.5rem] text-center px-3 py-2 rounded-xl border text-sm font-semibold transition {{ $tileStyle[$room->status] ?? '' }}">
                                         {{ $room->room_number }}
                                     </a>
                                 @endforeach
                             </div>
                         </div>
                     @empty
-                        <div class="py-10 text-center text-gray-500 dark:text-gray-400">
+                        <div class="py-10 text-center text-gray-600 dark:text-gray-300">
                             {{ __('No rooms yet.') }}
                             <a href="{{ route('rooms.create') }}" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline">{{ __('Add Room') }}</a>
                         </div>
@@ -141,7 +148,7 @@
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full text-sm">
-                            <thead class="bg-gray-50 dark:bg-gray-700 text-left text-xs uppercase tracking-wide text-gray-600 dark:text-gray-300">
+                            <thead class="bg-white/40 dark:bg-white/5 text-left text-xs uppercase tracking-wide text-gray-700 dark:text-gray-300">
                                 <tr>
                                     <th class="px-6 py-3">{{ __('Type Name') }}</th>
                                     <th class="px-4 py-3">{{ __('Price / Night') }}</th>
@@ -150,9 +157,9 @@
                                     <th class="px-4 py-3">{{ __('Available') }}</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                            <tbody class="divide-y divide-white/50 dark:divide-white/10">
                                 @forelse ($roomTypes as $type)
-                                    <tr class="hover:bg-amber-50/60 dark:hover:bg-gray-700/60">
+                                    <tr class="hover:bg-amber-50/60 dark:hover:bg-white/10">
                                         <td class="px-6 py-3 font-medium text-gray-900 dark:text-gray-100">{{ $type->type_name }}</td>
                                         <td class="px-4 py-3 font-medium text-amber-600 dark:text-amber-400">${{ number_format($type->price_per_night, 2) }}</td>
                                         <td class="px-4 py-3 text-gray-700 dark:text-gray-200">{{ $type->capacity }}</td>
@@ -162,7 +169,7 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="5" class="px-6 py-6 text-center text-gray-500 dark:text-gray-400">{{ __('No room types found.') }}</td></tr>
+                                    <tr><td colspan="5" class="px-6 py-6 text-center text-gray-600 dark:text-gray-300">{{ __('No room types found.') }}</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -172,27 +179,27 @@
                 {{-- Revenue + attention --}}
                 <div class="space-y-6">
                     <div class="{{ $card }} p-6">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Est. Revenue Tonight') }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('Est. Revenue Tonight') }}</p>
                         <p class="mt-1 text-3xl font-bold text-gray-900 dark:text-gray-100">${{ number_format($estRevenue, 2) }}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('Based on occupied rooms') }}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-300">{{ __('Based on occupied rooms') }}</p>
 
-                        <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
+                        <div class="my-4 border-t border-white/50 dark:border-white/10"></div>
 
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Max Potential / Night') }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('Max Potential / Night') }}</p>
                         <p class="mt-1 text-xl font-semibold text-amber-600 dark:text-amber-400">${{ number_format($maxRevenue, 2) }}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('If all non-maintenance rooms are booked') }}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-300">{{ __('If all non-maintenance rooms are booked') }}</p>
                     </div>
 
                     <div class="{{ $card }} p-6">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ __('Needs Attention') }}</h3>
                         @forelse ($maintenanceRooms as $room)
                             <a href="{{ route('rooms.edit', $room) }}"
-                               class="flex items-center justify-between py-2 {{ ! $loop->last ? 'border-b border-gray-100 dark:border-gray-700' : '' }} hover:text-amber-600 dark:hover:text-amber-400 text-gray-700 dark:text-gray-200">
+                               class="flex items-center justify-between py-2 {{ ! $loop->last ? 'border-b border-white/50 dark:border-white/10' : '' }} hover:text-amber-600 dark:hover:text-amber-400 text-gray-700 dark:text-gray-200">
                                 <span class="font-medium">{{ $room->room_number }}</span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ $room->roomType->type_name ?? '' }} · {{ __('Floor') }} {{ $room->floor ?? '-' }}</span>
+                                <span class="text-xs text-gray-600 dark:text-gray-300">{{ $room->roomType->type_name ?? '' }} · {{ __('Floor') }} {{ $room->floor ?? '-' }}</span>
                             </a>
                         @empty
-                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('No rooms under maintenance.') }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('No rooms under maintenance.') }}</p>
                         @endforelse
                     </div>
                 </div>
